@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=plerk
+    expose:
+      - "5432"
+    networks:
+      - network
+  web:
+    build: .
+    container_name: plerk_app
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    links:
+      - db
+    networks:
+      - network
+
+networks:
+  network:
